@@ -1,0 +1,573 @@
+/* 全局樣式 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* 彈出視窗樣式 */
+.popup-container {
+  width: 320px;
+  padding: 16px;
+}
+
+header {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 18px;
+  color: #06C755;
+}
+
+h2 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-primary {
+  background-color: #06C755;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #05b249;
+}
+
+.btn-secondary {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background-color: #e5e5e5;
+}
+
+.btn-save {
+  background-color: #0066cc;
+  color: white;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.btn-save:hover {
+  background-color: #0055aa;
+}
+
+.btn-warning {
+  background-color: #FFC107;
+  color: #212529;
+}
+
+.btn-warning:hover {
+  background-color: #E0A800;
+}
+
+.settings-section {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 16px;
+  margin-top: 16px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+footer {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+}
+
+/* Rich Menu 編輯器樣式 */
+.editor-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.tab.active {
+  border: 1px solid #ddd;
+  border-bottom-color: white;
+  border-radius: 4px 4px 0 0;
+  margin-bottom: -1px;
+  background-color: white;
+  font-weight: bold;
+  color: #06C755;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.canvas-container {
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#richmenu-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 5px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.edit-modes {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-mode {
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-mode.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
+.properties-panel {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.area-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.area-item.selected {
+  border-color: #06C755;
+}
+
+.action-type-select {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.area-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.area-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.area-form input, .area-form select {
+  width: 100%;
+  padding: 5px;
+}
+
+.action-btn {
+  margin-top: 20px;
+}
+
+/* 確保預覽區域樣式正確 */
+.preview-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.phone-mockup {
+  border: 10px solid #333;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 320px;
+}
+
+.phone-screen {
+  background-color: white;
+  height: 500px;
+  position: relative;
+}
+
+.chat-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex-grow: 1;
+}
+
+.richmenu-preview {
+  width: 100%;
+  position: relative;
+}
+
+.richmenu-preview img {
+  width: 100%;
+  display: block;
+}
+
+.preview-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.button-functions {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.function-item {
+  display: flex;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.function-number {
+  width: 30px;
+  height: 30px;
+  background-color: #06C755;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.function-details {
+  flex-grow: 1;
+}
+
+.function-type {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.function-description {
+  color: #666;
+  font-size: 13px;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 100;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.richmenu-preview img {
+  width: 100%;
+  display: block;
+}
+
+.chat-bar {
+  background-color: #f7f7f7;
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid #ddd;
+}
+
+/* Rich Menu 查看器樣式 */
+.viewer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.richmenu-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.richmenu-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.richmenu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.richmenu-image-container {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.richmenu-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.richmenu-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.image-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 5;
+}
+
+.default-badge {
+  display: inline-block;
+  background-color: #06C755;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.richmenu-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.richmenu-info {
+  padding: 15px;
+}
+
+.richmenu-title {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.richmenu-id {
+  font-size: 12px;
+  color: #666;
+  word-break: break-all;
+}
+
+.richmenu-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+}
+
+.no-richmenu {
+  text-align: center;
+  padding: 50px;
+  color: #666;
+}
+
+/* 圖片上傳對話框樣式 */
+.upload-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.upload-dialog-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.upload-dialog h3 {
+  margin-bottom: 10px;
+  color: #06C755;
+}
+
+.upload-requirements {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 12px;
+}
+
+.upload-requirements ul {
+  margin-left: 20px;
+}
+
+.image-preview-container {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.image-info {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.upload-form {
+  margin-top: 15px;
+}
+
+.upload-form input[type="file"] {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.upload-form .button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-upload {
+  background-color: #06C755;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-upload:hover {
+  background-color: #05b249;
+}
+
+.btn-upload:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.upload-status {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .editor-container, .viewer-container {
+    padding: 10px;
+  }
+  
+  .area-form {
+    grid-template-columns: 1fr;
+  }
+}

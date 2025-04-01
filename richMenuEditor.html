@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINE Rich Menu 編輯器</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="editor-container">
+    <div class="editor-header">
+      <h1>LINE Rich Menu 編輯器</h1>
+      <div>
+        <button id="save-richmenu" class="btn btn-primary">儲存 Rich Menu</button>
+        <button id="back-to-home" class="btn btn-secondary">返回</button>
+      </div>
+    </div>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="basic">基本設定</div>
+      <div class="tab" data-tab="areas">區域設定</div>
+      <div class="tab" data-tab="preview">預覽</div>
+    </div>
+    
+    <div class="tab-content active" id="basic-tab">
+      <div class="form-group">
+        <label for="richmenu-name">Rich Menu 名稱</label>
+        <input type="text" id="richmenu-name" placeholder="請輸入名稱">
+      </div>
+      
+      <div class="form-group">
+        <label for="chat-bar-text">聊天欄文字</label>
+        <input type="text" id="chat-bar-text" placeholder="顯示在底部聊天欄的文字" maxlength="14">
+        <small>最多14個字元</small>
+      </div>
+      
+      <div class="form-group">
+        <label>Rich Menu 尺寸</label>
+        <div style="display: flex; gap: 10px;">
+          <div>
+            <label for="menu-width">寬度</label>
+            <select id="menu-width">
+              <option value="2500">2500px (全尺寸)</option>
+              <option value="1200">1200px (半尺寸)</option>
+            </select>
+          </div>
+          <div>
+            <label for="menu-height">高度</label>
+            <select id="menu-height">
+              <option value="1686">1686px (全尺寸)</option>
+              <option value="843">843px (半尺寸)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="menu-image">Rich Menu 圖片</label>
+        <input type="file" id="menu-image" accept="image/jpeg, image/png">
+        <small>支援 JPEG 或 PNG 格式，檔案大小不超過 1MB</small>
+      </div>
+      
+      <button id="next-to-areas" class="btn btn-primary">下一步：設定區域</button>
+    </div>
+    
+    <div class="tab-content" id="areas-tab">
+      <div class="toolbar">
+        <div class="edit-modes">
+          <button id="mode-select" class="btn btn-mode active">選擇模式</button>
+          <button id="mode-create" class="btn btn-mode">拉框模式</button>
+        </div>
+        <button id="add-area" class="btn btn-primary">新增區域</button>
+        <button id="delete-area" class="btn btn-secondary">刪除選中區域</button>
+      </div>
+      
+      <div class="canvas-container">
+        <canvas id="richmenu-canvas" width="2500" height="1686"></canvas>
+      </div>
+      
+      <div class="properties-panel">
+        <h3>區域屬性</h3>
+        <div id="area-properties">
+          <p>請選擇或新增一個區域</p>
+        </div>
+      </div>
+      
+      <button id="next-to-preview" class="btn btn-primary">下一步：預覽</button>
+    </div>
+    
+    <div class="tab-content" id="preview-tab">
+      <h2>Rich Menu 預覽</h2>
+      <div class="preview-container">
+        <div class="phone-mockup">
+          <div class="phone-screen">
+            <div class="chat-container">
+              <div class="chat-messages"></div>
+              <div class="richmenu-preview">
+                <canvas id="preview-canvas" class="preview-overlay"></canvas>
+                <img id="preview-image" src="" alt="Rich Menu 預覽">
+              </div>
+              <div class="chat-bar" id="preview-chat-bar">聊天選單</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="button-functions">
+        <h3>按鈕功能說明</h3>
+        <div id="button-functions-list"></div>
+      </div>
+      
+      <div class="json-preview">
+        <h3>JSON 預覽</h3>
+        <pre id="json-output"></pre>
+      </div>
+      
+      <button id="create-richmenu" class="btn btn-primary">建立 Rich Menu</button>
+    </div>
+  </div>
+  
+  <script src="js/richMenuEditor.js"></script>
+</body>
+</html>
