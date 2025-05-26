@@ -106,11 +106,192 @@ document.addEventListener('DOMContentLoaded', function() {
   // 監聽表單變更
   document.getElementById('richmenu-name').addEventListener('input', function(e) {
     richMenuData.name = e.target.value;
+    updateJsonEditor(); // 更新 JSON 編輯器
   });
   
   document.getElementById('chat-bar-text').addEventListener('input', function(e) {
     richMenuData.chatBarText = e.target.value;
+    updateJsonEditor(); // 更新 JSON 編輯器
   });
+  
+  // JSON 編輯器相關功能
+  const jsonEditor = document.getElementById('richmenu-json');
+  const jsonValidationMessage = document.getElementById('json-validation-message');
+  
+  // 初始化 JSON 編輯器內容
+  updateJsonEditor();
+  
+  // 匯入 JSON 按鈕
+  document.getElementById('import-json').addEventListener('click', function() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    
+    input.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          jsonEditor.value = event.target.result;
+          // 嘗試驗證並應用 JSON
+          validateAndApplyJson();
+        };
+        reader.readAsText(file);
+      }
+    });
+    
+    input.click();
+  });
+  
+  // 匯出 JSON 按鈕
+  document.getElementById('export-json').addEventListener('click', function() {
+    const jsonString = JSON.stringify(richMenuData, null, 2);
+    const blob = new Blob([jsonString], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `richmenu-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+  
+  // 套用 JSON 按鈕
+  document.getElementById('apply-json').addEventListener('click', function() {
+    validateAndApplyJson();
+  });
+  
+  // JSON 編輯器內容變更
+  jsonEditor.addEventListener('input', function() {
+    // 重置驗證訊息
+    jsonValidationMessage.textContent = '';
+    jsonValidationMessage.className = '';
+  });
+  
+  // 更新 JSON 編輯器內容
+  function updateJsonEditor() {
+    // 避免因表單更新而觸發 updateFormFromJson
+    if (document.activeElement !== jsonEditor) {
+      jsonEditor.value = JSON.stringify(richMenuData, null, 2);
+    }
+  }
+  
+  // 驗證並應用 JSON
+  function validateAndApplyJson() {
+    try {
+      const jsonValue = jsonEditor.value.trim();
+      if (!jsonValue) {
+        throw new Error('JSON 不能為空');
+      }
+      
+      const parsedJson = JSON.parse(jsonValue);
+      
+      // 驗證 JSON 結構
+      if (!parsedJson.size || !parsedJson.size.width || !parsedJson.size.height) {
+        throw new Error('JSON 必須包含 size.width 和 size.height');
+      }
+      
+      // 驗證需要的字段
+      if (parsedJson.name === undefined) {
+        throw new Error('缺少 name 字段');
+      }
+      if (parsedJson.chatBarText === undefined) {
+        throw new Error('缺少 chatBarText 字段');
+      }
+      
+      // 深度複製以避免參考問題
+      richMenuData = JSON.parse(JSON.stringify(parsedJson));
+      
+      // 確保 areas 存在
+      if (!richMenuData.areas) {
+        richMenuData.areas = [];
+      }
+      
+      // 更新表單
+      updateFormFromJson();
+      
+      // 重新繪製 Canvas
+      drawCanvas();
+      
+      // 顯示成功訊息
+      jsonValidationMessage.textContent = '✓ JSON 已成功套用';
+      jsonValidationMessage.className = 'success';
+      
+      // 如果有圖片，更新畫布大小
+      if (menuImage) {
+        canvas.width = richMenuData.size.width;
+        canvas.height = richMenuData.size.height;
+        adjustCanvasDisplay();
+      }
+      
+      // 如果有區域，更新區域屬性面板
+      if (selectedAreaIndex >= 0 && selectedAreaIndex < richMenuData.areas.length) {
+        updateAreaProperties();
+      } else if (richMenuData.areas.length > 0) {
+        selectedAreaIndex = 0;
+        updateAreaProperties();
+      }
+      
+    } catch (error) {
+      console.error('JSON 解析錯誤:', error);
+      jsonValidationMessage.textContent = '✗ ' + error.message;
+      jsonValidationMessage.className = 'error';
+    }
+  }
+  
+  // 從 JSON 更新表單
+  function updateFormFromJson() {
+    document.getElementById('richmenu-name').value = richMenuData.name || '';
+    document.getElementById('chat-bar-text').value = richMenuData.chatBarText || '';
+    
+    // 更新尺寸選擇
+    const widthSelect = document.getElementById('menu-width');
+    const heightSelect = document.getElementById('menu-height');
+    
+    // 尋找最接近的寬度選項
+    let widthFound = false;
+    for (let i = 0; i < widthSelect.options.length; i++) {
+      if (parseInt(widthSelect.options[i].value) === richMenuData.size.width) {
+        widthSelect.selectedIndex = i;
+        widthFound = true;
+        break;
+      }
+    }
+    
+    // 如果沒有找到匹配的寬度選項，添加一個新選項
+    if (!widthFound) {
+      const option = document.createElement('option');
+      option.value = richMenuData.size.width;
+      option.text = `${richMenuData.size.width}px (自定義)`;
+      widthSelect.add(option);
+      widthSelect.value = richMenuData.size.width;
+    }
+    
+    // 尋找最接近的高度選項
+    let heightFound = false;
+    for (let i = 0; i < heightSelect.options.length; i++) {
+      if (parseInt(heightSelect.options[i].value) === richMenuData.size.height) {
+        heightSelect.selectedIndex = i;
+        heightFound = true;
+        break;
+      }
+    }
+    
+    // 如果沒有找到匹配的高度選項，添加一個新選項
+    if (!heightFound) {
+      const option = document.createElement('option');
+      option.value = richMenuData.size.height;
+      option.text = `${richMenuData.size.height}px (自定義)`;
+      heightSelect.add(option);
+      heightSelect.value = richMenuData.size.height;
+    }
+    
+    // 更新畫布大小
+    canvas.width = richMenuData.size.width;
+    canvas.height = richMenuData.size.height;
+  }
   
   // 下一步按鈕
   document.getElementById('next-to-areas').addEventListener('click', function() {

@@ -61,6 +61,22 @@
         <small>支援 JPEG 或 PNG 格式，檔案大小不超過 1MB</small>
       </div>
       
+      <div class="json-editor-section">
+        <details>
+          <summary>JSON 編輯模式</summary>
+          <div class="json-editor-container">
+            <div class="json-editor-toolbar">
+              <button id="import-json" class="btn btn-small">匯入 JSON</button>
+              <button id="export-json" class="btn btn-small">匯出 JSON</button>
+              <button id="apply-json" class="btn btn-primary btn-small">套用 JSON</button>
+              <span id="json-validation-message"></span>
+            </div>
+            <textarea id="richmenu-json" class="json-editor" placeholder="請輸入 Rich Menu JSON 格式"></textarea>
+            <p class="hint">提示：您可以直接編輯 JSON 來設定 Rich Menu。套用 JSON 後會更新所有設定。</p>
+          </div>
+        </details>
+      </div>
+      
       <button id="next-to-areas" class="btn btn-primary">下一步：設定區域</button>
     </div>
     

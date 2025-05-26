@@ -571,3 +571,62 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* 可以添加到現有 CSS 文件中 */
+.json-editor-section {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.json-editor-section summary {
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 0;
+}
+
+.json-editor-container {
+  margin-top: 10px;
+}
+
+.json-editor-toolbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.json-editor {
+  width: 100%;
+  min-height: 200px;
+  font-family: monospace;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.hint {
+  color: #666;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+#json-validation-message {
+  margin-left: auto;
+}
+
+#json-validation-message.error {
+  color: #d9534f;
+}
+
+#json-validation-message.success {
+  color: #5cb85c;
+}
+
+.btn-small {
+  padding: 4px 8px;
+  font-size: 0.9em;
+}

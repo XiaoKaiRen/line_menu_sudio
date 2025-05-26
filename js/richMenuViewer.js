@@ -36,6 +36,28 @@ document.addEventListener('DOMContentLoaded', function() {
   `;
   document.body.appendChild(linkUserDialog);
   
+  // 詳細設定對話框
+  const detailsDialog = document.createElement('div');
+  detailsDialog.id = 'details-dialog';
+  detailsDialog.className = 'upload-dialog';
+  detailsDialog.style.display = 'none';
+  detailsDialog.innerHTML = `
+    <div class="upload-dialog-content details-content">
+      <h3>Rich Menu 詳細設定</h3>
+      <div id="details-content"></div>
+      <div class="button-group">
+        <button id="close-details" class="btn btn-secondary">關閉</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(detailsDialog);
+  
+  // 關閉詳細設定對話框按鈕
+  const closeDetailsButton = document.getElementById('close-details');
+  closeDetailsButton.addEventListener('click', function() {
+    detailsDialog.style.display = 'none';
+  });
+  
   const userIdInput = document.getElementById('user-id-input');
   const linkUserButton = document.getElementById('link-user-button');
   const cancelLinkUserButton = document.getElementById('cancel-link-user');
@@ -113,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
               ${isDefault ? '<span class="default-badge">預設選單</span>' : ''}
             </div>
             <div class="richmenu-actions">
+              <button class="btn btn-small view-details-btn" data-id="${menu.richMenuId}">檢視設定</button>
               <button class="btn btn-small set-default-btn" data-id="${menu.richMenuId}" ${!hasImage ? 'disabled title="請先上傳圖片"' : ''}>設為預設</button>
               <button class="btn btn-small btn-link-user" data-id="${menu.richMenuId}" data-name="${menu.name}" ${!hasImage ? 'disabled title="請先上傳圖片"' : ''}>綁定給用戶</button>
               ${!hasImage ? 
@@ -142,10 +165,15 @@ document.addEventListener('DOMContentLoaded', function() {
           }
           
           // 綁定按鈕事件
+          const viewDetailsBtn = li.querySelector('.view-details-btn');
           const setDefaultBtn = li.querySelector('.set-default-btn');
           const deleteBtn = li.querySelector('.btn-delete');
           const uploadBtn = li.querySelector('.btn-upload');
           const linkUserBtn = li.querySelector('.btn-link-user');
+          
+          viewDetailsBtn.addEventListener('click', function() {
+            showDetailsDialog(menu);
+          });
           
           setDefaultBtn.addEventListener('click', function() {
             setDefaultRichMenu(menu.richMenuId);
@@ -169,6 +197,235 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       });
     });
+  }
+  
+  // 顯示Rich Menu詳細設定對話框
+  function showDetailsDialog(menu) {
+    const detailsContent = document.getElementById('details-content');
+    
+    // 設置基本資訊
+    let html = `
+      <div class="details-section">
+        <h4>基本資訊</h4>
+        <table class="details-table">
+          <tr>
+            <td>名稱:</td>
+            <td>${menu.name}</td>
+          </tr>
+          <tr>
+            <td>Rich Menu ID:</td>
+            <td><span class="mono-text">${menu.richMenuId}</span></td>
+          </tr>
+          <tr>
+            <td>聊天欄文字:</td>
+            <td>${menu.chatBarText}</td>
+          </tr>
+          <tr>
+            <td>尺寸:</td>
+            <td>${menu.size.width} x ${menu.size.height} 像素</td>
+          </tr>
+          <tr>
+            <td>預設顯示:</td>
+            <td>${menu.selected ? '是' : '否'}</td>
+          </tr>
+        </table>
+      </div>
+      
+      <div class="details-section">
+        <h4>區域設定 (${menu.areas.length} 個區域)</h4>
+    `;
+    
+    // 加入每個區域的資訊
+    menu.areas.forEach((area, index) => {
+      html += `
+        <div class="area-details">
+          <h5>區域 ${index + 1}</h5>
+          <table class="details-table">
+            <tr>
+              <td>位置:</td>
+              <td>X: ${area.bounds.x}, Y: ${area.bounds.y}</td>
+            </tr>
+            <tr>
+              <td>尺寸:</td>
+              <td>${area.bounds.width} x ${area.bounds.height} 像素</td>
+            </tr>
+            <tr>
+              <td>動作類型:</td>
+              <td>${getActionTypeDisplay(area.action.type)}</td>
+            </tr>
+            ${getActionDetailsHtml(area.action)}
+          </table>
+        </div>
+      `;
+    });
+    
+    html += `</div>`;
+    
+    // 加入JSON形式的完整設定
+    html += `
+      <div class="details-section">
+        <h4>JSON 格式設定</h4>
+        <pre class="json-code">${JSON.stringify(menu, null, 2)}</pre>
+      </div>
+    `;
+    
+    detailsContent.innerHTML = html;
+    detailsDialog.style.display = 'flex';
+    
+    // 設置樣式
+    const style = document.createElement('style');
+    style.textContent = `
+      .details-content {
+        width: 80%;
+        max-width: 800px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      .details-section {
+        margin-bottom: 20px;
+      }
+      .details-section h4 {
+        margin-top: 0;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+      }
+      .details-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .details-table td {
+        padding: 5px;
+        border-bottom: 1px solid #eee;
+      }
+      .details-table td:first-child {
+        width: 120px;
+        font-weight: bold;
+      }
+      .area-details {
+        background: #f5f5f5;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+      .area-details h5 {
+        margin-top: 0;
+        margin-bottom: 10px;
+      }
+      .json-code {
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+      }
+      .mono-text {
+        font-family: monospace;
+        background-color: #f0f0f0;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // 獲取動作類型顯示名稱
+  function getActionTypeDisplay(actionType) {
+    switch(actionType) {
+      case 'message': return '發送訊息';
+      case 'uri': return '開啟網址';
+      case 'postback': return '回傳資料';
+      case 'datetimepicker': return '日期時間選擇器';
+      case 'richmenuswitch': return 'Rich Menu 切換';
+      case 'camera': return '相機';
+      case 'cameraRoll': return '相簿';
+      case 'location': return '位置';
+      default: return actionType;
+    }
+  }
+  
+  // 獲取動作詳細資訊的 HTML
+  function getActionDetailsHtml(action) {
+    let html = '';
+    
+    switch(action.type) {
+      case 'message':
+        html = `
+          <tr>
+            <td>訊息文字:</td>
+            <td>${action.text}</td>
+          </tr>
+        `;
+        break;
+      case 'uri':
+        html = `
+          <tr>
+            <td>網址:</td>
+            <td><a href="${action.uri}" target="_blank">${action.uri}</a></td>
+          </tr>
+        `;
+        break;
+      case 'postback':
+        html = `
+          <tr>
+            <td>資料:</td>
+            <td>${action.data}</td>
+          </tr>
+        `;
+        if (action.displayText) {
+          html += `
+            <tr>
+              <td>顯示文字:</td>
+              <td>${action.displayText}</td>
+            </tr>
+          `;
+        }
+        break;
+      case 'datetimepicker':
+        html = `
+          <tr>
+            <td>資料:</td>
+            <td>${action.data}</td>
+          </tr>
+          <tr>
+            <td>模式:</td>
+            <td>${getDateTimePickerModeText(action.mode)}</td>
+          </tr>
+        `;
+        break;
+      case 'richmenuswitch':
+        html = `
+          <tr>
+            <td>目標 Rich Menu:</td>
+            <td>${action.richMenuAliasId}</td>
+          </tr>
+          <tr>
+            <td>資料:</td>
+            <td>${action.data}</td>
+          </tr>
+        `;
+        break;
+      default:
+        html = `
+          <tr>
+            <td>動作資料:</td>
+            <td><pre>${JSON.stringify(action, null, 2)}</pre></td>
+          </tr>
+        `;
+    }
+    
+    return html;
+  }
+  
+  // 獲取日期時間選擇器模式文字
+  function getDateTimePickerModeText(mode) {
+    switch(mode) {
+      case 'date': return '日期';
+      case 'time': return '時間';
+      case 'datetime': return '日期時間';
+      default: return mode;
+    }
   }
   
   // 載入Rich Menu圖片
