@@ -134,7 +134,7 @@ line_richmenu_ctool/
 
 以下是未來版本計劃添加或改進的功能：
 
-1. **匯入/匯出功能**：支援將 Rich Menu 設計匯出為 JSON 或專案檔案，以及從這些檔案匯入
+1. ~~**匯入/匯出功能**：支援將 Rich Menu 設計匯出為 JSON 或專案檔案，以及從這些檔案匯入~~ <- 已完成
 2. **範本庫**：提供常用的 Rich Menu 設計範本，方便快速建立新的 Rich Menu
 3. **編輯已有 Rich Menu**：目前 LINE API 不支援直接修改現有 Rich Menu，未來將探索可行的替代方案
 4. **多帳號管理**：在同一介面中管理多個 LINE Official Account 的 Rich Menu
